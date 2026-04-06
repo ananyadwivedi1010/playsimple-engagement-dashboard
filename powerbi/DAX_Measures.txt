@@ -1,0 +1,60 @@
+// ============================================================
+// DAX MEASURES - PlaySimple Player Engagement Dashboard
+// ============================================================
+
+// 1. Total Players
+Total Players = COUNTROWS(player_data)
+
+// 2. Day 1 Retention Rate
+Day1 Retention % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(player_data), player_data[day1_retention] = 1),
+    [Total Players]
+) * 100
+
+// 3. Day 7 Retention Rate
+Day7 Retention % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(player_data), player_data[day7_retention] = 1),
+    [Total Players]
+) * 100
+
+// 4. Day 30 Retention Rate
+Day30 Retention % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(player_data), player_data[day30_retention] = 1),
+    [Total Players]
+) * 100
+
+// 5. Paying Conversion Rate
+Paying Conversion % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(player_data), player_data[is_paying_user] = 1),
+    [Total Players]
+) * 100
+
+// 6. Average Session Duration
+Avg Session Duration = AVERAGE(player_data[avg_session_min])
+
+// 7. Total Revenue
+Total Revenue (USD) = SUM(player_data[revenue_usd])
+
+// 8. ARPU (Avg Revenue Per User)
+ARPU = DIVIDE([Total Revenue (USD)], [Total Players])
+
+// 9. Average Puzzles Per Session
+Avg Puzzles Per Session = AVERAGE(player_data[puzzles_per_session])
+
+// 10. Churn at Day 3 (players who left by day 3)
+Day3 Churn % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(player_data), player_data[days_active] <= 3),
+    [Total Players]
+) * 100
+
+// 11. Power Users (30+ days active)
+Power Users = 
+CALCULATE(COUNTROWS(player_data), player_data[days_active] >= 30)
+
+// 12. Avg Days Active
+Avg Days Active = AVERAGE(player_data[days_active])
